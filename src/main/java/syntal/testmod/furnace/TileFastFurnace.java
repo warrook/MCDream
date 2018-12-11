@@ -8,9 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import scala.tools.nsc.interpreter.Power;
+import syntal.testmod.tools.PowerStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,6 +24,9 @@ public class TileFastFurnace extends TileEntity implements ITickable
     public static final int OUTPUT_SLOTS = 3;
     public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
     public static final int MAX_PROGRESS = 40;
+    public static final int MAX_POWER = 10000;
+    public static final int POWER_IN_PER_TICK = 120;
+    public static final int POWER_PER_TICK = 20;
 
     private int progress = 0;
     private int clientProgress = -1;
@@ -44,8 +50,12 @@ public class TileFastFurnace extends TileEntity implements ITickable
     @Override
     public void update() {
         if (!world.isRemote) {
+            if (powerStorage.getEnergyStored() < POWER_PER_TICK)
+                return;
+
             if (progress > 0)
             {
+                powerStorage.consumeEnergy(POWER_PER_TICK);
                 progress--;
                 if (progress <= 0)
                     attemptSmelt();
@@ -114,7 +124,13 @@ public class TileFastFurnace extends TileEntity implements ITickable
         }
     };
 
+    // ------------------------------------------------------------------------------------------------
+
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputHandler, outputHandler);
+
+    private PowerStorage powerStorage = new PowerStorage(MAX_POWER, POWER_IN_PER_TICK);
+
+    // ------------------------------------------------------------------------------------------------
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -124,6 +140,7 @@ public class TileFastFurnace extends TileEntity implements ITickable
         if (compound.hasKey("itemsOut"))
             outputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOut"));
         progress = compound.getInteger("progress");
+        powerStorage.setEnergy(compound.getInteger("power"));
     }
 
     @Override
@@ -132,12 +149,17 @@ public class TileFastFurnace extends TileEntity implements ITickable
         compound.setTag("itemsIn", inputHandler.serializeNBT());
         compound.setTag("itemsOut", outputHandler.serializeNBT());
         compound.setInteger("progress", progress);
+        compound.setInteger("power", powerStorage.getEnergyStored());
         return compound;
     }
+
+    // ------------------------------------------------------------------------------------------------
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return true;
+        if (capability == CapabilityEnergy.ENERGY)
             return true;
         return super.hasCapability(capability, facing);
     }
@@ -153,6 +175,8 @@ public class TileFastFurnace extends TileEntity implements ITickable
             else
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(outputHandler);
         }
+        if (capability == CapabilityEnergy.ENERGY)
+            return CapabilityEnergy.ENERGY.cast(powerStorage);
         return super.getCapability(capability, facing);
     }
 

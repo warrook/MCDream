@@ -28,13 +28,14 @@ public class BlockFastFurnace extends Block implements ITileEntityProvider
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-    public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, "fast_furnace");
+    public static final String NAME = "fast_furnace";
+    public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, NAME);
 
     public BlockFastFurnace()
     {
         super(Material.IRON);
         setRegistryName(FAST_FURNACE);
-        setUnlocalizedName(TestMod.MODID + ".fast_furnace");
+        setUnlocalizedName(TestMod.MODID + "." + NAME);
         setHarvestLevel("pickaxe", 2); //iron
         setCreativeTab(TestMod.creativeTab);
         setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

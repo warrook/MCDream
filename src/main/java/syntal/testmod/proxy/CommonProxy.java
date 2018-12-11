@@ -15,6 +15,8 @@ import syntal.testmod.ModBlocks;
 import syntal.testmod.TestMod;
 import syntal.testmod.furnace.BlockFastFurnace;
 import syntal.testmod.furnace.TileFastFurnace;
+import syntal.testmod.generator.BlockGenerator;
+import syntal.testmod.generator.TileGenerator;
 
 @Mod.EventBusSubscriber
 public class CommonProxy
@@ -29,12 +31,15 @@ public class CommonProxy
     public static void registerBlocks(RegistryEvent.Register<Block> e)
     {
         e.getRegistry().register(new BlockFastFurnace());
-        GameRegistry.registerTileEntity(TileFastFurnace.class, TestMod.MODID + ":fast_furnace");
+        e.getRegistry().register(new BlockGenerator());
 
+        GameRegistry.registerTileEntity(TileFastFurnace.class, TestMod.MODID + ":" + BlockFastFurnace.NAME);
+        GameRegistry.registerTileEntity(TileGenerator.class, TestMod.MODID + ":" + BlockGenerator.NAME);
     }
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> e)
     {
         e.getRegistry().register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
+        e.getRegistry().register(new ItemBlock(ModBlocks.blockGenerator).setRegistryName(BlockGenerator.GENERATOR));
     }
 }
