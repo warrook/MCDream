@@ -2,6 +2,7 @@ package syntal.testmod.furnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,8 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFastFurnace extends Container
 {
+    private static final int PROGRESS_ID = 0;
+
     private TileFastFurnace te;
 
     public ContainerFastFurnace(IInventory playerInventory, TileFastFurnace te) {
@@ -86,5 +89,21 @@ public class ContainerFastFurnace extends Container
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
         return te.CanInteractWith(playerIn);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        if (te.getProgress() != te.getClientProgress())
+        {
+            for (IContainerListener listener : listeners)
+                listener.sendWindowProperty(this, PROGRESS_ID, te.getProgress()); //Only uses 16-bit values
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data) {
+        if (id == PROGRESS_ID)
+            te.setClientProgress(data);
     }
 }
