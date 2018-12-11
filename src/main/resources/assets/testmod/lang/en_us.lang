@@ -1,0 +1,5 @@
+# Blocks
+tile.testmod.fast_furnace.name=Fast Furnace
+
+# Creative Tab
+itemGroup.testmod=Test Mod
