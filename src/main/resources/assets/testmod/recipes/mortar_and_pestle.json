@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xax",
+    " x "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:stone",
+      "data": 32767
+    },
+    "a": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "testmod:mortar_and_pestle"
+  }
+}

@@ -1,4 +1,4 @@
-package syntal.testmod.generator;
+package syntal.testmod.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,31 +12,23 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import syntal.testmod.TestMod;
+import syntal.testmod.tileentities.TileGenerator;
+import syntal.testmod.utils.GenericBlock;
 
 import javax.annotation.Nullable;
 
-public class BlockGenerator extends Block implements ITileEntityProvider
+public class BlockGenerator extends GenericBlock implements ITileEntityProvider
 {
     public static final String NAME = "generator";
-    public static final ResourceLocation GENERATOR = new ResourceLocation(TestMod.MODID, NAME);
+    public static final ResourceLocation R_NAME = new ResourceLocation(TestMod.MODID, NAME);
 
     public BlockGenerator() {
-        super(Material.GLASS);
-        setRegistryName(GENERATOR);
-        setUnlocalizedName(TestMod.MODID + "." + NAME);
-        //setHarvestLevel("pickaxe", 0); //iron
-        setCreativeTab(TestMod.creativeTab);
+        super(Material.GLASS, NAME, R_NAME);
     }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileGenerator();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }

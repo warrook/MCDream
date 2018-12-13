@@ -1,7 +1,7 @@
-package syntal.testmod.furnace;
+package syntal.testmod.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -9,15 +9,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import syntal.testmod.network.Messages;
+import syntal.testmod.network.PacketSyncPower;
+import syntal.testmod.tileentities.TileFastFurnace;
+import syntal.testmod.utils.GenericContainer;
+import syntal.testmod.utils.GenericTileEntity;
+import syntal.testmod.utils.IPowerContainer;
 
-public class ContainerFastFurnace extends Container
+public class ContainerFastFurnace extends GenericContainer implements IPowerContainer
 {
     private static final int PROGRESS_ID = 0;
 
     private TileFastFurnace te;
 
-    public ContainerFastFurnace(IInventory playerInventory, TileFastFurnace te) {
-        this.te = te;
+    public ContainerFastFurnace(IInventory playerInventory, GenericTileEntity tileEntity) {
+        this.te = (TileFastFurnace) tileEntity;
         addTESlots();
         addPlayerSlots(playerInventory);
     }
@@ -96,9 +102,24 @@ public class ContainerFastFurnace extends Container
         super.detectAndSendChanges();
         if (te.getProgress() != te.getClientProgress())
         {
+            te.setClientProgress(te.getProgress());
             for (IContainerListener listener : listeners)
                 listener.sendWindowProperty(this, PROGRESS_ID, te.getProgress()); //Only uses 16-bit values
         }
+        if (te.getEnergy() != te.getClientEnergy()) {
+            te.setClientEnergy(te.getEnergy());
+            for (IContainerListener listener : listeners) {
+                if (listener instanceof EntityPlayerMP) {
+                    EntityPlayerMP player = (EntityPlayerMP) listener;
+                    Messages.INSTANCE.sendTo(new PacketSyncPower(te.getEnergy()), player);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void syncPower(int energy) {
+            te.setClientEnergy(energy);
     }
 
     @Override

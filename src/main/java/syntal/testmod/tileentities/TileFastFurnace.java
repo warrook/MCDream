@@ -1,10 +1,9 @@
-package syntal.testmod.furnace;
+package syntal.testmod.tileentities;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
@@ -12,13 +11,13 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import scala.tools.nsc.interpreter.Power;
-import syntal.testmod.tools.PowerStorage;
+import syntal.testmod.utils.GenericTileEntity;
+import syntal.testmod.utils.PowerStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileFastFurnace extends TileEntity implements ITickable
+public class TileFastFurnace extends GenericTileEntity implements ITickable
 {
     public static final int INPUT_SLOTS = 3;
     public static final int OUTPUT_SLOTS = 3;
@@ -29,7 +28,9 @@ public class TileFastFurnace extends TileEntity implements ITickable
     public static final int POWER_PER_TICK = 20;
 
     private int progress = 0;
+
     private int clientProgress = -1;
+    private int clientEnergy = -1;
 
     public int getProgress() {
         return progress;
@@ -45,6 +46,18 @@ public class TileFastFurnace extends TileEntity implements ITickable
 
     public void setClientProgress(int clientProgress) {
         this.clientProgress = clientProgress;
+    }
+
+    public int getClientEnergy() {
+        return clientEnergy;
+    }
+
+    public void setClientEnergy(int clientEnergy) {
+        this.clientEnergy = clientEnergy;
+    }
+
+    public int getEnergy() {
+        return powerStorage.getEnergyStored();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package syntal.testmod.generator;
+package syntal.testmod.tileentities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -7,11 +7,12 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import syntal.testmod.tools.PowerStorage;
+import syntal.testmod.utils.GenericTileEntity;
+import syntal.testmod.utils.PowerStorage;
 
 import javax.annotation.Nullable;
 
-public class TileGenerator extends TileEntity implements ITickable
+public class TileGenerator extends GenericTileEntity implements ITickable
 {
     public static final int MAX_POWER = 10000;
     public static final int POWER_IN_PER_TICK = 120;

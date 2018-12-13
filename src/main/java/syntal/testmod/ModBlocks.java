@@ -3,8 +3,9 @@ package syntal.testmod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import syntal.testmod.furnace.BlockFastFurnace;
-import syntal.testmod.generator.BlockGenerator;
+import syntal.testmod.blocks.BlockCalea;
+import syntal.testmod.blocks.BlockFastFurnace;
+import syntal.testmod.blocks.BlockGenerator;
 
 /*
     Basic blocks require these pieces (make sure you do them or it won't work):
@@ -23,12 +24,15 @@ public class ModBlocks
     public static BlockFastFurnace blockFastFurnace;
     @GameRegistry.ObjectHolder(TestMod.MODID + ":" + BlockGenerator.NAME)
     public static BlockGenerator blockGenerator;
+    @GameRegistry.ObjectHolder(TestMod.MODID + ":" + BlockCalea.NAME)
+    public static BlockCalea blockCalea;
 
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
         blockFastFurnace.initModel();
         blockGenerator.initModel();
+        blockCalea.initModel();
     }
 
 }

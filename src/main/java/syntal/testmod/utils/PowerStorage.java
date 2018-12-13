@@ -1,7 +1,5 @@
-package syntal.testmod.tools;
+package syntal.testmod.utils;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class PowerStorage extends EnergyStorage

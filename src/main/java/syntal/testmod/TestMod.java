@@ -31,12 +31,12 @@ public class TestMod
     @Mod.Instance
     public static TestMod instance;
 
-    public static Logger logger;
+    public static Logger LOGGER;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        logger = event.getModLog();
+        LOGGER = event.getModLog();
         proxy.preInit(event);
     }
 

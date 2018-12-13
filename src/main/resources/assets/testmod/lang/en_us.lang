@@ -1,6 +1,11 @@
 # Blocks
 tile.testmod.fast_furnace.name=Fast Furnace
 tile.testmod.generator.name=Prismatic Converter
+tile.testmod.calea_bush.name=Calea
+
+# Items
+item.testmod.calea_leaf.name=Calea Leaf
+item.testmod.mortar_and_pestle.name=Mortar and Pestle
 
 # Creative Tab
 itemGroup.testmod=Test Mod

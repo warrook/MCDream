@@ -1,4 +1,4 @@
-package syntal.testmod.furnace;
+package syntal.testmod.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -21,23 +21,23 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import syntal.testmod.TestMod;
+import syntal.testmod.proxy.GuiHandler;
+import syntal.testmod.tileentities.TileFastFurnace;
+import syntal.testmod.utils.GenericBlock;
 
 import javax.annotation.Nullable;
 
-public class BlockFastFurnace extends Block implements ITileEntityProvider
+public class BlockFastFurnace extends GenericBlock implements ITileEntityProvider
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
     public static final String NAME = "fast_furnace";
-    public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, NAME);
+    public static final ResourceLocation R_NAME = new ResourceLocation(TestMod.MODID, NAME);
 
     public BlockFastFurnace()
     {
-        super(Material.IRON);
-        setRegistryName(FAST_FURNACE);
-        setUnlocalizedName(TestMod.MODID + "." + NAME);
-        setHarvestLevel("pickaxe", 2); //iron
-        setCreativeTab(TestMod.creativeTab);
+        super(Material.IRON, NAME, R_NAME);
+        setHarvestLevel("pickaxe", 2); //iron pick
         setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
@@ -56,14 +56,8 @@ public class BlockFastFurnace extends Block implements ITileEntityProvider
         if (!(te instanceof TileFastFurnace))
             return false;
 
-        playerIn.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        playerIn.openGui(TestMod.instance, GuiHandler.GuiTypes.FAST_FURNACE.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 
     @Override

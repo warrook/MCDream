@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross",
+    "textures": {
+      "cross": "testmod:blocks/calea2"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+      "model": "testmod:item/calea_bush"
+    }]
+  }
+}

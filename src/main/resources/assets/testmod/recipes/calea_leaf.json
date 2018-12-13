@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{"item": "testmod:calea_bush"}],
+  "result":
+  {
+    "item": "testmod:calea_leaf",
+    "count": 8
+  }
+}
